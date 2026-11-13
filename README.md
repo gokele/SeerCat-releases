@@ -35,13 +35,13 @@
 需要 Linux (systemd)，使用 root 运行：
 
 ```bash
-curl -fL https://github.com/gokele/SeerCat-releases/releases/latest/download/panel.sh -o panel.sh && bash panel.sh
+curl -fL https://raw.githubusercontent.com/gokele/SeerCat-releases/main/panel.sh -o panel.sh && bash panel.sh
 ```
 
 国内服务器下载慢可以用加速地址：
 
 ```bash
-curl -fL https://ghfast.top/https://github.com/gokele/SeerCat-releases/releases/latest/download/panel.sh -o panel.sh && bash panel.sh
+curl -fL https://ghfast.top/https://raw.githubusercontent.com/gokele/SeerCat-releases/main/panel.sh -o panel.sh && bash panel.sh
 ```
 
 选择「安装」，输入面板端口 (默认 `6366`)，完成后访问 `http://服务器IP:端口`。
@@ -52,10 +52,10 @@ curl -fL https://ghfast.top/https://github.com/gokele/SeerCat-releases/releases/
 
 ## 安装节点
 
-在面板「节点管理」新增节点，点击复制安装命令，到节点服务器上用 root 执行即可，命令形如：
+在面板「节点管理」新增节点，点击复制安装命令，到节点服务器上用 root 执行即可，命令形如 (国内服务器把地址前面加上 `https://ghfast.top/`)：
 
 ```bash
-curl -fL https://github.com/gokele/SeerCat-releases/releases/latest/download/agent.sh -o ./agent.sh && chmod +x ./agent.sh && ./agent.sh -a 面板地址:端口 -s 节点密钥
+curl -fL https://raw.githubusercontent.com/gokele/SeerCat-releases/main/agent.sh -o ./agent.sh && chmod +x ./agent.sh && ./agent.sh -a 面板地址:端口 -s 节点密钥
 ```
 
 ## 从 flux-panel 迁移
@@ -72,7 +72,7 @@ curl -fL https://github.com/gokele/SeerCat-releases/releases/latest/download/age
 **节点**：在每台节点上运行：
 
 ```bash
-curl -fL https://github.com/gokele/SeerCat-releases/releases/latest/download/agent.sh -o agent.sh && bash agent.sh update
+curl -fL https://raw.githubusercontent.com/gokele/SeerCat-releases/main/agent.sh -o agent.sh && bash agent.sh update
 ```
 
 脚本会把旧的 `/etc/flux_agent` 迁移到 `/etc/seercat`，沿用原面板地址、密钥和本地规则，旧目录改名为 `/etc/flux_agent.bak-时间` 备份。
@@ -90,10 +90,10 @@ curl -fL https://github.com/gokele/SeerCat-releases/releases/latest/download/age
 
 ```bash
 # 主控
-curl -fL https://github.com/gokele/SeerCat-releases/releases/latest/download/panel.sh -o panel.sh && bash panel.sh update
+curl -fL https://raw.githubusercontent.com/gokele/SeerCat-releases/main/panel.sh -o panel.sh && bash panel.sh update
 
 # 节点
-curl -fL https://github.com/gokele/SeerCat-releases/releases/latest/download/agent.sh -o agent.sh && bash agent.sh update
+curl -fL https://raw.githubusercontent.com/gokele/SeerCat-releases/main/agent.sh -o agent.sh && bash agent.sh update
 ```
 
 安装指定版本可加环境变量，如 `SEERCAT_VERSION=v2.2.0 bash panel.sh update`。
