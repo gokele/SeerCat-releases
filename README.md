@@ -22,9 +22,12 @@
 - **多用户**：按用户、按隧道分配转发数量、流量额度、到期时间，到期或超额自动暂停
 - **限速**：按用户的隧道权限绑定限速规则
 - **流量计费**：单向 / 双向计费，流量倍率，每月自动重置
+- **流量统计**：每个节点、每条转发都能看每天、每月用了多少；节点可设月流量配额与重置日 (对应 VPS 计费周期)
+- **转发流量上限**：单条转发可设上限与重置日，超额自动暂停，到期自动恢复
 - **节点管理**：一键生成安装命令，在线状态与系统监控，链路诊断
 - **节点自动恢复**：节点重装系统或换机器后，重新连上面板即自动恢复全部规则与限速
 - **登录人机验证**：拉绳 / 曲线滑块行为验证 (可在网站配置里开启)
+- **自动更新**：主控与节点在面板里一键更新或每天定时自动更新，校验文件完整性，失败自动回滚
 - 主控、节点都是单个程序，不依赖 Docker、Java、数据库服务
 
 ## 安装主控
@@ -76,6 +79,15 @@ curl -fL https://github.com/gokele/SeerCat-releases/releases/latest/download/age
 
 ## 更新
 
+**在面板里更新 (推荐)**：打开「系统更新」页面，可以一键更新主控、单个节点或全部节点。开启「自动更新」后，每天在设定时间 (默认凌晨 4 点) 自动检查：有新版本时先更新主控，主控更新完成后自动更新所有在线节点。
+
+- 下载后校验 SHA256，文件被篡改或下载不完整会拒绝安装
+- 主控更新前自动备份数据库 (保留最近 5 份)，并用数据库副本自检新版本，自检不通过不会替换
+- 新版本启动失败 (主控没能监听端口、节点没能连上主控) 时自动回滚到原版本
+- 国内服务器连不上 GitHub 时自动改走加速地址
+
+**用脚本更新**：v2.1.0 及更早的版本、旧版 flux-panel 还没有在线更新功能，需要运行一次脚本，之后就可以在面板里更新了：
+
 ```bash
 # 主控
 curl -fL https://github.com/gokele/SeerCat-releases/releases/latest/download/panel.sh -o panel.sh && bash panel.sh update
@@ -84,7 +96,7 @@ curl -fL https://github.com/gokele/SeerCat-releases/releases/latest/download/pan
 curl -fL https://github.com/gokele/SeerCat-releases/releases/latest/download/agent.sh -o agent.sh && bash agent.sh update
 ```
 
-更新前会自动备份程序和数据库 (主控保留最近 5 份)，新版本启动失败会自动回滚。安装指定版本可加 `SEERCAT_VERSION=v2.1.0`。
+安装指定版本可加环境变量，如 `SEERCAT_VERSION=v2.2.0 bash panel.sh update`。
 
 ## 卸载
 
