@@ -22,9 +22,10 @@ DB_FILE="$DATA_DIR/seercat.db"
 SERVICE="seercat"
 SERVICE_FILE="/etc/systemd/system/$SERVICE.service"
 
-# 旧版 flux-panel (Docker) 的容器名
+# 旧版 flux-panel (Docker) 的容器: 默认名称，实际以 detect_old 按名称或镜像找到的为准
 OLD_BACKEND="springboot-backend"
 OLD_FRONTEND="vite-frontend"
+DOCKER=""
 
 red()   { echo -e "\033[31m$*\033[0m"; }
 green() { echo -e "\033[32m$*\033[0m"; }
@@ -129,23 +130,63 @@ EOF
   systemctl enable "$SERVICE" >/dev/null 2>&1
 }
 
-old_installed() {
-  command -v docker >/dev/null 2>&1 && docker inspect "$OLD_BACKEND" >/dev/null 2>&1
+# find_docker 找到 docker 程序 (有些面板只在交互式终端里通过 alias / 自定义 PATH 提供 docker)
+find_docker() {
+  [[ -n "$DOCKER" ]] && return 0
+  local p
+  p="$(command -v docker 2>/dev/null || true)"
+  if [[ -z "$p" ]]; then
+    for c in /usr/bin/docker /usr/local/bin/docker /snap/bin/docker /opt/bin/docker; do
+      [[ -x "$c" ]] && { p="$c"; break; }
+    done
+  fi
+  [[ -n "$p" ]] && DOCKER="$p"
+  [[ -n "$DOCKER" ]]
+}
+
+# detect_old 按容器名或镜像名 (bqlpfy/springboot-backend、bqlpfy/vite-frontend) 找旧版容器
+detect_old() {
+  find_docker || return 1
+  local list name image back="" front=""
+  list="$("$DOCKER" ps -a --format '{{.Names}}|{{.Image}}' 2>/dev/null || true)"
+  while IFS='|' read -r name image; do
+    [[ -z "$name" ]] && continue
+    if [[ "$name" == "springboot-backend" || "$image" == *"/springboot-backend"* ]]; then
+      [[ -z "$back" ]] && back="$name"
+    elif [[ "$name" == "vite-frontend" || "$image" == *"/vite-frontend"* ]]; then
+      [[ -z "$front" ]] && front="$name"
+    fi
+  done <<< "$list"
+  [[ -z "$back" ]] && return 1
+  OLD_BACKEND="$back"
+  [[ -n "$front" ]] && OLD_FRONTEND="$front"
+  return 0
+}
+
+old_installed() { detect_old; }
+
+# 有旧版痕迹 (数据卷 sqlite_data、flux 镜像) 却没找到旧容器: 不能当作全新安装，以免跑出空面板、端口冲突
+old_traces() {
+  if find_docker; then
+    "$DOCKER" volume inspect sqlite_data >/dev/null 2>&1 && return 0
+    "$DOCKER" ps -a --format '{{.Image}}' 2>/dev/null | grep -q 'bqlpfy/' && return 0
+  fi
+  [[ -d /var/lib/docker/volumes/sqlite_data ]]
 }
 
 # 从旧容器读取环境变量
 old_env() {
-  docker inspect -f '{{range .Config.Env}}{{println .}}{{end}}' "$OLD_BACKEND" 2>/dev/null | grep -E "^$1=" | head -1 | cut -d= -f2-
+  "$DOCKER" inspect -f '{{range .Config.Env}}{{println .}}{{end}}' "$OLD_BACKEND" 2>/dev/null | grep -E "^$1=" | head -1 | cut -d= -f2-
 }
 
 # 旧容器映射到宿主机的端口 (读容器配置，容器已停止也能取到)
 old_port() {
-  docker inspect -f "{{with index .HostConfig.PortBindings \"$2/tcp\"}}{{(index . 0).HostPort}}{{end}}" "$1" 2>/dev/null
+  "$DOCKER" inspect -f "{{with index .HostConfig.PortBindings \"$2/tcp\"}}{{(index . 0).HostPort}}{{end}}" "$1" 2>/dev/null
 }
 
 # 从旧版 flux-panel (Docker) 迁移: 复制数据库、沿用 JWT 密钥与端口，删除旧容器 (数据卷与镜像保留)
 migrate_from_docker() {
-  info "检测到旧版 flux-panel (Docker)，开始迁移..."
+  info "检测到旧版 flux-panel (Docker): 后端容器 $OLD_BACKEND，前端容器 $OLD_FRONTEND，开始迁移..."
   local secret front back
   secret="$(old_env JWT_SECRET)"
   front="$(old_port "$OLD_FRONTEND" 80)"
@@ -154,14 +195,14 @@ migrate_from_docker() {
   info "原前端端口: ${front:-无}  原后端端口: ${back:-无}"
 
   info "停止旧版服务 (等待数据写盘)..."
-  docker stop -t 30 "$OLD_BACKEND" >/dev/null 2>&1 || true
-  docker stop -t 10 "$OLD_FRONTEND" >/dev/null 2>&1 || true
+  "$DOCKER" stop -t 30 "$OLD_BACKEND" >/dev/null 2>&1 || true
+  "$DOCKER" stop -t 10 "$OLD_FRONTEND" >/dev/null 2>&1 || true
   sleep 2
 
   mkdir -p "$DATA_DIR"
   local tmp
   tmp="$(mktemp -d)"
-  if ! docker cp "$OLD_BACKEND:/app/data/." "$tmp/" >/dev/null 2>&1 || [[ ! -s "$tmp/gost.db" ]]; then
+  if ! "$DOCKER" cp "$OLD_BACKEND:/app/data/." "$tmp/" >/dev/null 2>&1 || [[ ! -s "$tmp/gost.db" ]]; then
     red "无法从旧容器复制数据库，迁移中止 (旧版未改动，可执行 docker start $OLD_BACKEND $OLD_FRONTEND 恢复)"
     rm -rf "$tmp"
     exit 1
@@ -189,7 +230,62 @@ EOF
   chmod 600 "$ENV_FILE"
 
   info "删除旧容器 (数据卷 sqlite_data 与镜像保留，确认无误后可自行删除)..."
-  docker rm "$OLD_BACKEND" "$OLD_FRONTEND" >/dev/null 2>&1 || true
+  "$DOCKER" rm "$OLD_BACKEND" "$OLD_FRONTEND" >/dev/null 2>&1 || true
+}
+
+# old_volume_dir 旧版数据卷 sqlite_data 的目录 (容器删了数据卷还在)
+old_volume_dir() {
+  local dir=""
+  if find_docker; then
+    dir="$("$DOCKER" volume inspect -f '{{.Mountpoint}}' sqlite_data 2>/dev/null || true)"
+  fi
+  [[ -z "$dir" ]] && dir="/var/lib/docker/volumes/sqlite_data/_data"
+  [[ -s "$dir/gost.db" ]] && echo "$dir"
+}
+
+# find_old_env 找旧版安装脚本留下的 .env (含 JWT_SECRET 与端口)
+find_old_env() {
+  local f
+  for f in "$PWD/.env" /root/.env /root/*/.env /opt/*/.env /home/*/.env /home/*/*/.env /www/*/.env; do
+    [[ -f "$f" ]] && grep -q '^JWT_SECRET=' "$f" && grep -q '^FRONTEND_PORT=' "$f" && { echo "$f"; return 0; }
+  done
+  return 1
+}
+
+# migrate_from_volume 旧容器已被删除: 从数据卷复制数据库，从 .env 沿用密钥和端口 (找不到则询问端口)
+migrate_from_volume() {
+  local dir="$1" envf secret="" front="" back=""
+  info "检测到旧版 flux-panel 的数据卷 ($dir)，旧容器已不存在，从数据卷迁移..."
+  if envf="$(find_old_env)"; then
+    secret="$(grep -E '^JWT_SECRET=' "$envf" | head -1 | cut -d= -f2-)"
+    front="$(grep -E '^FRONTEND_PORT=' "$envf" | head -1 | cut -d= -f2-)"
+    back="$(grep -E '^BACKEND_PORT=' "$envf" | head -1 | cut -d= -f2-)"
+    info "沿用旧配置 $envf: 前端端口 $front，后端端口 $back"
+  else
+    info "没有找到旧版的 .env，请输入原来的端口 (保持不变节点才能继续连接)"
+    read -r -p "原前端端口 (打开面板用，如 6366): " front
+    read -r -p "原后端端口 (节点连接用，如 6365): " back
+    secret="$(random_secret)"
+    info "登录密钥已重新生成，迁移后需要重新登录一次"
+  fi
+  mkdir -p "$DATA_DIR" "$INSTALL_DIR/backup"
+  cp -f "$dir/gost.db" "$DB_FILE"
+  [[ -f "$dir/gost.db-wal" ]] && cp -f "$dir/gost.db-wal" "$DB_FILE-wal"
+  [[ -f "$dir/gost.db-shm" ]] && cp -f "$dir/gost.db-shm" "$DB_FILE-shm"
+  cp -f "$dir"/gost.db* "$INSTALL_DIR/backup/" 2>/dev/null || true
+  green "数据库已复制 (另存一份在 $INSTALL_DIR/backup，原数据卷未改动)"
+  local listen=""
+  for p in $front $back; do
+    [[ "$p" =~ ^[0-9]+$ ]] && listen="${listen:+$listen,}:$p"
+  done
+  [[ -z "$listen" ]] && listen=":6366"
+  cat > "$ENV_FILE" <<EOF2
+SEERCAT_LISTEN=$listen
+SEERCAT_DB=$DB_FILE
+JWT_SECRET=$secret
+TZ=Asia/Shanghai
+EOF2
+  chmod 600 "$ENV_FILE"
 }
 
 fresh_config() {
@@ -218,11 +314,20 @@ install_panel() {
   mkdir -p "$INSTALL_DIR"
   fetch_binary "$BIN.new"
 
-  local migrated=0
+  local migrated=0 voldir=""
   if old_installed; then
     migrate_from_docker
     migrated=1
+  elif voldir="$(old_volume_dir)"; then
+    migrate_from_volume "$voldir"
+    migrated=1
+  elif old_traces; then
+    rm -f "$BIN.new"
+    red "发现旧版 flux-panel 的痕迹 (数据卷 sqlite_data 或 bqlpfy 镜像)，但没能找到它的容器，已停止安装以免覆盖数据。"
+    red "请把以下命令的输出发给开发者: docker ps -a --format '{{.Names}}|{{.Image}}|{{.Ports}}'"
+    exit 1
   else
+    info "未检测到旧版 flux-panel，执行全新安装"
     fresh_config
   fi
   mv -f "$BIN.new" "$BIN"
@@ -255,7 +360,7 @@ install_panel() {
 update_panel() {
   need_root
   if [[ ! -x "$BIN" ]]; then
-    if old_installed; then
+    if old_installed || old_volume_dir >/dev/null; then
       info "检测到旧版 flux-panel，将执行迁移安装"
       install_panel
       return
@@ -320,6 +425,12 @@ menu() {
     *) exit 0 ;;
   esac
 }
+
+# 测试时只加载函数 (SEERCAT_SOURCE_ONLY=1 source panel.sh)
+if [[ "${SEERCAT_SOURCE_ONLY:-}" == "1" ]]; then
+  # shellcheck disable=SC2317
+  return 0 2>/dev/null || exit 0
+fi
 
 case "$1" in
   install) install_panel ;;
