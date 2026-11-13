@@ -1,14 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <defs>
-    <linearGradient id="flux-g" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#6366F1"/>
-      <stop offset="1" stop-color="#06B6D4"/>
-    </linearGradient>
-  </defs>
-  <rect width="32" height="32" rx="8" fill="url(#flux-g)"/>
-  <g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" transform="translate(0.4 1.3)">
-    <path d="M10.5 24V11.5a3 3 0 0 1 3-3H22" stroke-width="3.2"/>
-    <path d="M19 5.2 22.6 8.5 19 11.8" stroke-width="2.6"/>
-    <path d="M10.5 16.5H18" stroke-width="3.2"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="120" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#F97316"/><stop offset="1" stop-color="#C2410C"/></linearGradient></defs><rect width="120" height="120" rx="28" fill="url(#bg)"/>
+  <g fill="#FFF8F1" stroke="#FFF8F1" stroke-width="5" stroke-linejoin="round">
+    <path d="M22 60 L27 16 L57 37 Z"/>
+    <path d="M98 60 L93 16 L63 37 Z"/>
+    <path d="M17 71 C17 47 37 33 60 33 C83 33 103 47 103 71 C103 93 84 107 60 107 C36 107 17 93 17 71 Z"/>
   </g>
-</svg>
+  <g fill="#FDBA8C">
+    <path d="M30.5 47 L32.2 26 L47 37.2 Z"/>
+    <path d="M89.5 47 L87.8 26 L73 37.2 Z"/>
+  </g>
+  <g fill="none" stroke="#C2410C" stroke-width="5.2" stroke-linecap="round">
+    <path d="M37 72 Q45.5 80.5 54 72"/>
+    <path d="M66 72 Q74.5 80.5 83 72"/>
+  </g>
+  <path d="M56 84 H64 L60 88.6 Z" fill="#C2410C" stroke="#C2410C" stroke-width="2.2" stroke-linejoin="round"/></svg>
