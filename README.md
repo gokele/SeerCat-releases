@@ -9,8 +9,8 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/gokele/SeerCat-releases/releases/latest"><img src="https://img.shields.io/github/v/release/gokele/SeerCat-releases?label=最新版本" alt="release"></a>
-  <img src="https://img.shields.io/badge/平台-Linux%20amd64%20%7C%20arm64-6366F1" alt="platform">
+  <a href="https://github.com/gokele/SeerCat-releases/releases/latest"><img src="https://img.shields.io/github/v/release/gokele/SeerCat-releases?label=%E6%9C%80%E6%96%B0%E7%89%88%E6%9C%AC&color=111827" alt="release"></a>
+  <img src="https://img.shields.io/badge/%E5%B9%B3%E5%8F%B0-Linux%20amd64%20%7C%20arm64-111827" alt="platform">
 </p>
 
 ---
