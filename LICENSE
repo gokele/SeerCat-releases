@@ -1,201 +1,101 @@
-                                 Apache License
-                           Version 2.0, January 2004
-                        http://www.apache.org/licenses/
+SeerCat 软件使用许可
+SeerCat Software License
 
-   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+版权所有 (c) 2026 gokele。保留所有权利。
+Copyright (c) 2026 gokele. All rights reserved.
 
-   1. Definitions.
+本许可适用于 gokele/SeerCat-releases 发布的 SeerCat 程序 (主控 seercat、节点 seercat-agent)、
+安装脚本 (panel.sh、agent.sh) 及相关文件 (以下统称"本软件")。下载、安装或使用本软件，即表示你同意本许可。
+如不同意，请勿下载、安装或使用本软件。
 
-      "License" shall mean the terms and conditions for use, reproduction,
-      and distribution as defined by Sections 1 through 9 of this document.
+一、许可授予
 
-      "Licensor" shall mean the copyright owner or entity authorized by
-      the copyright owner that is granting the License.
+在遵守本许可的前提下，你可以免费地:
 
-      "Legal Entity" shall mean the union of the acting entity and all
-      other entities that control, are controlled by, or are under common
-      control with that entity. For the purposes of this definition,
-      "control" means (i) the power, direct or indirect, to cause the
-      direction or management of such entity, whether by contract or
-      otherwise, or (ii) ownership of fifty percent (50%) or more of the
-      outstanding shares, or (iii) beneficial ownership of such entity.
+1. 在你拥有或有权管理的服务器上安装和运行本软件，安装数量不限;
+2. 使用本软件运营你自己的转发服务，包括个人使用和收费的商业运营;
+3. 为备份或自用目的保留本软件的副本。
 
-      "You" (or "Your") shall mean an individual or Legal Entity
-      exercising permissions granted by this License.
+本许可是非独占、不可转让、不可再许可的。
 
-      "Source" form shall mean the preferred form for making modifications,
-      including but not limited to software source code, documentation
-      source, and configuration files.
+二、限制
 
-      "Object" form shall mean any form resulting from mechanical
-      transformation or translation of a Source form, including but
-      not limited to compiled object code, generated documentation,
-      and conversions to other media types.
+除本许可明确允许的以外，你不得:
 
-      "Work" shall mean the work of authorship, whether in Source or
-      Object form, made available under the License, as indicated by a
-      copyright notice that is included in or attached to the work
-      (an example is provided in the Appendix below).
+1. 出售、转售、出租、出借本软件，或以任何形式就本软件本身收取费用
+   (包括捆绑在其他产品或服务中作为软件出售、提供"代安装本软件"的付费服务);
+2. 分发、转载、镜像、托管或以其他方式向第三方提供本软件或其任何部分,
+   包括在其他网站、网盘、代码仓库或镜像站重新发布; 向他人分享官方下载地址不受此限;
+3. 对本软件进行再许可、转让或以本许可以外的条款提供给他人;
+4. 修改本软件，或去除、遮盖本软件中的版权、许可与署名信息;
+5. 将本软件或其名称、标志用于暗示与作者存在合作或认可关系的用途。
 
-      "Derivative Works" shall mean any work, whether in Source or Object
-      form, that is based on (or derived from) the Work and for which the
-      editorial revisions, annotations, elaborations, or other modifications
-      represent, as a whole, an original work of authorship. For the purposes
-      of this License, Derivative Works shall not include works that remain
-      separable from, or merely link (or bind by name) to the interfaces of,
-      the Work and Derivative Works thereof.
+在适用法律明确允许的范围内，上述限制不影响你依法享有的权利。
 
-      "Contribution" shall mean any work of authorship, including
-      the original version of the Work and any modifications or additions
-      to that Work or Derivative Works thereof, that is intentionally
-      submitted to Licensor for inclusion in the Work by the copyright owner
-      or by an individual or Legal Entity authorized to submit on behalf of
-      the copyright owner. For the purposes of this definition, "submitted"
-      means any form of electronic, verbal, or written communication sent
-      to the Licensor or its representatives, including but not limited to
-      communication on electronic mailing lists, source code control systems,
-      and issue tracking systems that are managed by, or on behalf of, the
-      Licensor for the purpose of discussing and improving the Work, but
-      excluding communication that is conspicuously marked or otherwise
-      designated in writing by the copyright owner as "Not a Contribution."
+三、第三方组件
 
-      "Contributor" shall mean Licensor and any individual or Legal Entity
-      on behalf of whom a Contribution has been received by Licensor and
-      subsequently incorporated within the Work.
+本软件包含基于第三方开源项目的代码，包括 flux-panel (Apache License 2.0) 与 gost (MIT License) 等，
+其版权声明与许可证全文见随附的 THIRD_PARTY_LICENSES 与 NOTICE。
+这些第三方组件适用其各自的许可证，本许可不限制你依据这些许可证对第三方组件 (从其原始项目获取时) 享有的权利。
 
-   2. Grant of Copyright License. Subject to the terms and conditions of
-      this License, each Contributor hereby grants to You a perpetual,
-      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
-      copyright license to reproduce, prepare Derivative Works of,
-      publicly display, publicly perform, sublicense, and distribute the
-      Work and such Derivative Works in Source or Object form.
+四、合法使用
 
-   3. Grant of Patent License. Subject to the terms and conditions of
-      this License, each Contributor hereby grants to You a perpetual,
-      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
-      (except as stated in this section) patent license to make, have made,
-      use, offer to sell, sell, import, and otherwise transfer the Work,
-      where such license applies only to those patent claims licensable
-      by such Contributor that are necessarily infringed by their
-      Contribution(s) alone or by combination of their Contribution(s)
-      with the Work to which such Contribution(s) was submitted. If You
-      institute patent litigation against any entity (including a
-      cross-claim or counterclaim in a lawsuit) alleging that the Work
-      or a Contribution incorporated within the Work constitutes direct
-      or contributory patent infringement, then any patent licenses
-      granted to You under this License for that Work shall terminate
-      as of the date such litigation is filed.
+本软件为流量转发工具，你须确保对本软件的使用符合你所在国家或地区的法律法规。
+禁止将本软件用于网络攻击、数据窃取、非法访问或其他违法或未经授权的用途。
 
-   4. Redistribution. You may reproduce and distribute copies of the
-      Work or Derivative Works thereof in any medium, with or without
-      modifications, and in Source or Object form, provided that You
-      meet the following conditions:
+五、免责声明
 
-      (a) You must give any other recipients of the Work or
-          Derivative Works a copy of this License; and
+本软件按"现状"提供，不附带任何明示或默示的担保，包括但不限于适销性、特定用途适用性与不侵权的担保。
+在法律允许的最大范围内，作者不对因使用或无法使用本软件造成的任何直接、间接、附带或后果性损失承担责任，
+包括但不限于数据丢失、服务中断、利润损失或因违反法律法规产生的责任。
 
-      (b) You must cause any modified files to carry prominent notices
-          stating that You changed the files; and
+六、许可终止
 
-      (c) You must retain, in the Source form of any Derivative Works
-          that You distribute, all copyright, patent, trademark, and
-          attribution notices from the Source form of the Work,
-          excluding those notices that do not pertain to any part of
-          the Derivative Works; and
+如你违反本许可的任何条款，你依本许可获得的权利自动终止，你须停止使用并删除本软件的所有副本。
+作者可随新版本更新本许可; 新版本的使用适用随该版本发布的许可。
 
-      (d) If the Work includes a "NOTICE" text file as part of its
-          distribution, then any Derivative Works that You distribute must
-          include a readable copy of the attribution notices contained
-          within such NOTICE file, excluding those notices that do not
-          pertain to any part of the Derivative Works, in at least one
-          of the following places: within a NOTICE text file distributed
-          as part of the Derivative Works; within the Source form or
-          documentation, if provided along with the Derivative Works; or,
-          within a display generated by the Derivative Works, if and
-          wherever such third-party notices normally appear. The contents
-          of the NOTICE file are for informational purposes only and
-          do not modify the License. You may add Your own attribution
-          notices within Derivative Works that You distribute, alongside
-          or as an addendum to the NOTICE text from the Work, provided
-          that such additional attribution notices cannot be construed
-          as modifying the License.
+七、其他
 
-      You may add Your own copyright statement to Your modifications and
-      may provide additional or different license terms and conditions
-      for use, reproduction, or distribution of Your modifications, or
-      for any such Derivative Works as a whole, provided Your use,
-      reproduction, and distribution of the Work otherwise complies with
-      the conditions stated in this License.
+本许可未明确授予的权利均由作者保留。如本许可的任何条款被认定无效，其余条款仍然有效。
+本许可以中文版本为准，英文译文仅供参考。
 
-   5. Submission of Contributions. Unless You explicitly state otherwise,
-      any Contribution intentionally submitted for inclusion in the Work
-      by You to the Licensor shall be under the terms and conditions of
-      this License, without any additional terms or conditions.
-      Notwithstanding the above, nothing herein shall supersede or modify
-      the terms of any separate license agreement you may have executed
-      with Licensor regarding such Contributions.
+----------------------------------------------------------------------
+English translation (for reference only; the Chinese version prevails)
+----------------------------------------------------------------------
 
-   6. Trademarks. This License does not grant permission to use the trade
-      names, trademarks, service marks, or product names of the Licensor,
-      except as required for reasonable and customary use in describing the
-      origin of the Work and reproducing the content of the NOTICE file.
+This license covers the SeerCat programs (panel "seercat" and agent "seercat-agent"), the installer
+scripts (panel.sh, agent.sh) and related files published at gokele/SeerCat-releases (the "Software").
+By downloading, installing or using the Software you agree to this license.
 
-   7. Disclaimer of Warranty. Unless required by applicable law or
-      agreed to in writing, Licensor provides the Work (and each
-      Contributor provides its Contributions) on an "AS IS" BASIS,
-      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
-      implied, including, without limitation, any warranties or conditions
-      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
-      PARTICULAR PURPOSE. You are solely responsible for determining the
-      appropriateness of using or redistributing the Work and assume any
-      risks associated with Your exercise of permissions under this License.
+1. Grant. Subject to this license, you may, free of charge: (a) install and run the Software on
+   servers you own or are authorized to manage, without limit on the number of installations;
+   (b) use the Software to operate your own forwarding services, for personal use or paid commercial
+   operation; (c) keep copies for backup or your own use. The license is non-exclusive,
+   non-transferable and non-sublicensable.
 
-   8. Limitation of Liability. In no event and under no legal theory,
-      whether in tort (including negligence), contract, or otherwise,
-      unless required by applicable law (such as deliberate and grossly
-      negligent acts) or agreed to in writing, shall any Contributor be
-      liable to You for damages, including any direct, indirect, special,
-      incidental, or consequential damages of any character arising as a
-      result of this License or out of the use or inability to use the
-      Work (including but not limited to damages for loss of goodwill,
-      work stoppage, computer failure or malfunction, or any and all
-      other commercial damages or losses), even if such Contributor
-      has been advised of the possibility of such damages.
+2. Restrictions. You may not: (a) sell, resell, rent or lend the Software, or charge for the Software
+   itself in any form (including bundling it as software in another product or service, or paid
+   "install SeerCat for you" services); (b) distribute, re-host, mirror or otherwise provide the
+   Software or any part of it to third parties, including republishing it on other websites, file
+   hosts, code repositories or mirrors (sharing the official download links is allowed);
+   (c) sublicense or transfer the Software; (d) modify the Software or remove copyright, license or
+   attribution notices; (e) use the Software, its name or logo to imply endorsement by the author.
+   These restrictions do not limit rights that applicable law expressly grants you.
 
-   9. Accepting Warranty or Additional Liability. While redistributing
-      the Work or Derivative Works thereof, You may choose to offer,
-      and charge a fee for, acceptance of support, warranty, indemnity,
-      or other liability obligations and/or rights consistent with this
-      License. However, in accepting such obligations, You may act only
-      on Your own behalf and on Your sole responsibility, not on behalf
-      of any other Contributor, and only if You agree to indemnify,
-      defend, and hold each Contributor harmless for any liability
-      incurred by, or claims asserted against, such Contributor by reason
-      of your accepting any such warranty or additional liability.
+3. Third-party components. The Software contains code based on third-party open source projects,
+   including flux-panel (Apache License 2.0) and gost (MIT License). Their notices and full license
+   texts are in THIRD_PARTY_LICENSES and NOTICE. Those components remain under their own licenses,
+   and nothing here limits your rights under those licenses for the components as obtained from
+   their original projects.
 
-   END OF TERMS AND CONDITIONS
+4. Lawful use. You are responsible for using the Software in compliance with applicable laws.
+   Using it for network attacks, data theft, unauthorized access or any unlawful purpose is prohibited.
 
-   APPENDIX: How to apply the Apache License to your work.
+5. Disclaimer. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND. TO THE MAXIMUM EXTENT
+   PERMITTED BY LAW, THE AUTHOR SHALL NOT BE LIABLE FOR ANY DAMAGES ARISING FROM THE USE OF OR
+   INABILITY TO USE THE SOFTWARE.
 
-      To apply the Apache License to your work, attach the following
-      boilerplate notice, with the fields enclosed by brackets "[]"
-      replaced with your own identifying information. (Don't include
-      the brackets!)  The text should be enclosed in the appropriate
-      comment syntax for the file format. We also recommend that a
-      file or class name and description of purpose be included on the
-      same "printed page" as the copyright notice for easier
-      identification within third-party archives.
+6. Termination. Your rights under this license terminate automatically if you breach it; you must
+   then stop using and delete all copies. New versions may come with an updated license.
 
-   Copyright [yyyy] [name of copyright owner]
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+7. All rights not expressly granted are reserved by the author.

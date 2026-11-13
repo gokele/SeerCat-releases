@@ -1,7 +1,8 @@
 SeerCat
 Copyright (c) 2026 gokele
 
-SeerCat 包含以下第三方作品或基于其修改。随附的 LICENSE 为 Apache License 2.0 全文 (flux-panel 的许可证)。
+SeerCat 依据随附的 LICENSE (SeerCat 软件使用许可) 提供。
+SeerCat 包含以下第三方作品或基于其修改，这些组件的许可证全文见 THIRD_PARTY_LICENSES。
 
 ------------------------------------------------------------------------
 flux-panel  https://github.com/bqlpfy/flux-panel

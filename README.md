@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./logo.svg" width="96" alt="SeerCat">
+  <img src="./logo.png" width="96" alt="SeerCat">
 </p>
 
 <h1 align="center">SeerCat</h1>
@@ -127,9 +127,11 @@ TZ=Asia/Shanghai              # 流量重置与统计使用的时区
 
 **文件校验**：每个版本附带 `SHA256SUMS`，可用 `sha256sum -c SHA256SUMS` 校验下载的文件。
 
-## 许可与致谢
+## 许可
 
-SeerCat 基于 [flux-panel](https://github.com/bqlpfy/flux-panel) (Apache License 2.0) 与 [gost](https://github.com/go-gost/gost) (MIT) 开发，详见 [NOTICE](./NOTICE) 与 [LICENSE](./LICENSE)。
+SeerCat **可免费使用**，包括运营你自己的转发服务 (个人或商业运营均可)；**禁止转售、出租本软件，禁止二次分发** (在其他网站、网盘、仓库或镜像重新发布)。分享本仓库的官方下载地址不受限制。完整条款见 [LICENSE](./LICENSE)。
+
+SeerCat 基于 [flux-panel](https://github.com/bqlpfy/flux-panel) (Apache License 2.0) 与 [gost](https://github.com/go-gost/gost) (MIT) 修改开发，感谢原作者。第三方组件的许可证全文见 [THIRD_PARTY_LICENSES](./THIRD_PARTY_LICENSES)，署名与修改说明见 [NOTICE](./NOTICE)。
 
 ## 免责声明
 
