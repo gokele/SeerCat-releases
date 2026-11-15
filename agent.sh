@@ -80,26 +80,6 @@ fetch_binary() {
   info "版本: $("$dest" -V)"
 }
 
-# 端口更新 / 删除转发时断开旧连接需要 tcpkill (dsniff)
-install_tcpkill() {
-  command -v tcpkill >/dev/null 2>&1 && return 0
-  info "安装 tcpkill..."
-  if command -v apt-get >/dev/null 2>&1; then
-    apt-get update >/dev/null 2>&1; apt-get install -y dsniff >/dev/null 2>&1
-  elif command -v dnf >/dev/null 2>&1; then
-    dnf install -y epel-release >/dev/null 2>&1; dnf install -y dsniff >/dev/null 2>&1
-  elif command -v yum >/dev/null 2>&1; then
-    yum install -y epel-release >/dev/null 2>&1; yum install -y dsniff >/dev/null 2>&1
-  elif command -v apk >/dev/null 2>&1; then
-    apk add --no-cache dsniff >/dev/null 2>&1
-  elif command -v pacman >/dev/null 2>&1; then
-    pacman -S --noconfirm dsniff >/dev/null 2>&1
-  elif command -v zypper >/dev/null 2>&1; then
-    zypper install -y dsniff >/dev/null 2>&1
-  fi
-  command -v tcpkill >/dev/null 2>&1 || info "tcpkill 未能安装，不影响转发，仅修改端口时旧连接不会被立即断开"
-}
-
 write_service() {
   cat > "$SERVICE_FILE" <<EOF
 [Unit]
@@ -175,7 +155,6 @@ install_agent() {
   need_root
   mkdir -p "$INSTALL_DIR"
   fetch_binary "$BIN.new" || exit 1
-  install_tcpkill
   if old_installed; then
     migrate_old
   fi
@@ -208,7 +187,6 @@ update_agent() {
     exit 1
   fi
   fetch_binary "$BIN.new" || exit 1
-  install_tcpkill
   systemctl stop "$SERVICE" || true
   cp -f "$BIN" "$BIN.bak"
   mv -f "$BIN.new" "$BIN"
